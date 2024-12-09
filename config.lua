@@ -1,19 +1,56 @@
 Config = {}
 
-Config.CleaningLocations = {
-    {x = 1050.0, y = 2100.0, z = 30.0, prop = "prop_box_wood01a"},
-    {x = 1060.0, y = 2110.0, z = 30.0, prop = "prop_rub_binbag_01"},
-    {x = 1070.0, y = 2120.0, z = 30.0, prop = "prop_pile_dirt_02"}
-}
+Config.NPCCoords = vector3(176.58, -1460.48, 29.24)
+Config.NPCModel = "s_m_y_garbage"
+Config.NpcHeading = 120.34
+
+Config.NpcBlip = true
+Config.TrashSpotBlip = true
 
 Config.TruckModel = "benson"
-Config.CleaningDuration = 5000 -- Change to secs
-Config
+Config.TruckSpawnLocation = vector3(165.56, -1466.69, 29.12)
+Config.TruckHeading = 49.8
 
-Config.minJobs = 1
-Config.maxJobs = 5
+Config.CleaningDuration = 5000
+Config.Reward = {min = 100, max = 300}
+Config.CashItem = "cash"
 
-Config.cleaningSpotsPerJob = {
-    Min = 4,
-    Max = 7
+Config.JobLocations = {
+    -- [1] = {
+    --     trashSpots = {
+    --         vector3(-310.5, -979.5, 31.08),
+    --         vector3(-309.5, -980.5, 31.08),
+    --         vector3(-311.0, -981.0, 31.08),
+    --     }
+    -- },
+    -- [2] = {
+    --     trashSpots = {
+    --         vector3(-316.0, -984.5, 31.08),
+    --         vector3(-314.5, -986.0, 31.08),
+    --         vector3(-315.5, -985.5, 31.08),
+    --     }
+    -- },
+    [1] = {
+        trashSpots = {
+            vector3(159.17, -1452.53, 29.14),
+            -- vector3(-309.5, -980.5, 31.08),
+            -- vector3(-311.0, -981.0, 31.08),
+        }
+    },
+
 }
+
+Config.TrashProps = {
+    "prop_rub_litter_01",
+    "prop_rub_litter_02",
+    "prop_rub_litter_03",
+    "prop_rub_litter_04",
+    "prop_rub_litter_05",
+    "prop_rub_litter_06",
+    "prop_rub_litter_07",
+}
+Config.StartJobMessage = "A Location has been marked on your GPS! Go clean!"
+Config.EndJobMessage = "You have successfully completed your cleaning job!"
+Config.FailedJobMessage = "You failed to clean all trash spots. No payout for you."
+Config.PayoutNotification = "You cleaned all spots! Head back to the NPC to collect your payout."
+Config.PayoutMessage = "You received $%d for your hard work!"

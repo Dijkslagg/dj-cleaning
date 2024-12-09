@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 description 'DJ Cleaning Job'
-author 'Your Name'
+author 'Dijkslag#0'
 
 shared_script 'config.lua'
 server_script 'server/server.lua'

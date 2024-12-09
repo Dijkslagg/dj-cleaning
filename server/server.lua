@@ -1,45 +1,69 @@
-local jobInProgress = false
-local jobParticipants = {}
-local cleanedLocations = {}
+local activeJobs = {}
 
 RegisterNetEvent('dj-cleaning:startJob')
 AddEventHandler('dj-cleaning:startJob', function()
     local src = source
-    if not jobParticipants[src] then
-        jobParticipants[src] = true
-        TriggerClientEvent('dj-cleaning:notify', src, "Job started. Go to your truck!")
-        TriggerClientEvent('dj-cleaning:assignTruck', src)
-        if not jobInProgress then
-            jobInProgress = true
-            TriggerClientEvent('dj-cleaning:notify', -1, "A cleaning job has started in the area!")
-        end
-        TriggerClientEvent('dj-cleaning:spawnProps', src, Config.CleaningLocations)
-        TriggerClientEvent('dj-cleaning:updateLocations', src, cleanedLocations)
-    end
-end)
-
-RegisterNetEvent('dj-cleaning:cleanLocation')
-AddEventHandler('dj-cleaning:cleanLocation', function(locationIndex)
-    local src = source
-    if cleanedLocations[locationIndex] then
-        TriggerClientEvent('ox_lib:notify', src, {description = "This location is already cleaned!", type = "error"})
+    if activeJobs[src] then
+        TriggerClientEvent('ox_lib:notify', src, {description = "You already have an active job!", type = "error"})
         return
     end
-    cleanedLocations[locationIndex] = true
-    TriggerClientEvent('dj-cleaning:updateLocations', -1, cleanedLocations)
-    TriggerClientEvent('dj-cleaning:removeProp', -1, locationIndex)
-    TriggerClientEvent('ox_lib:notify', src, {description = "You cleaned the location!", type = "success"})
+
+    local jobLocationIndex = math.random(#Config.JobLocations)
+    local selectedLocation = Config.JobLocations[jobLocationIndex]
+
+    local trash = {}
+    for _, spotCoords in ipairs(selectedLocation.trashSpots) do
+        local randomProp = Config.TrashProps[math.random(#Config.TrashProps)]
+        table.insert(trash, {coords = spotCoords, prop = randomProp})
+    end
+
+    local jobCoords = selectedLocation.trashSpots[1]
+
+    activeJobs[src] = {
+        location = jobCoords,
+        trash = trash,
+        completed = 0
+    }
+
+    TriggerClientEvent('dj-cleaning:assignJob', src, jobCoords, trash)
 end)
 
-AddEventHandler('playerDropped', function()
+RegisterNetEvent('dj-cleaning:completeSpot')
+AddEventHandler('dj-cleaning:completeSpot', function(locationIndex)
     local src = source
-    if jobParticipants[src] then
-        jobParticipants[src] = nil
-        if next(jobParticipants) == nil then
-            jobInProgress = false
-            cleanedLocations = {}
-            -- test
-            TriggerClientEvent('dj-cleaning:notify', -1, "The cleaning job has ended!")
-        end
+    if not activeJobs[src] then return end
+
+    activeJobs[src].completed = activeJobs[src].completed + 1
+
+    if activeJobs[src].completed >= #activeJobs[src].trash then
+        TriggerClientEvent('dj-cleaning:endJob', src)
+        activeJobs[src] = nil
     end
+end)
+
+RegisterNetEvent('dj-cleaning:collectPayout')
+AddEventHandler('dj-cleaning:collectPayout', function()
+    local src = source
+    local reward = math.random(Config.Reward.min, Config.Reward.max)
+    local QBCore = exports['qb-core']:GetCoreObject()
+    local player = QBCore.Functions.GetPlayer(src)
+
+    if player then
+        player.Functions.AddMoney('cash', reward, 'cleaning job payout')
+        TriggerClientEvent('ox_lib:notify', src, {
+            description = string.format(Config.PayoutMessage, reward),
+            type = "success"
+        })
+    else
+        print("[dj-cleaning] Player not found for payout")
+    end
+end)
+
+RegisterNetEvent('dj-cleaning:endJob')
+AddEventHandler('dj-cleaning:endJob', function()
+    local src = source
+    if activeJobs[src] then
+        activeJobs[src] = nil
+    end
+    -- TriggerClientEvent('ox_lib:notify', src, {description = Config.EndJobMessage, type = "success"})
 end)
