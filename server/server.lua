@@ -38,6 +38,7 @@ AddEventHandler('playerDropped', function()
         if next(jobParticipants) == nil then
             jobInProgress = false
             cleanedLocations = {}
+            -- test
             TriggerClientEvent('dj-cleaning:notify', -1, "The cleaning job has ended!")
         end
     end

@@ -7,4 +7,13 @@ Config.CleaningLocations = {
 }
 
 Config.TruckModel = "benson"
-Config.CleaningDuration = 5000
+Config.CleaningDuration = 5000 -- Change to secs
+Config
+
+Config.minJobs = 1
+Config.maxJobs = 5
+
+Config.cleaningSpotsPerJob = {
+    Min = 4,
+    Max = 7
+}

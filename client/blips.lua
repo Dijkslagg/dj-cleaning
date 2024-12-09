@@ -99,6 +99,7 @@ AddEventHandler('dj-cleaning:startCleaning', function(data)
 end)
 
 function createBlip(location)
+    -- test
     local blip = AddBlipForCoord(location.x, location.y, location.z)
     SetBlipSprite(blip, 1)
     SetBlipColour(blip, 2)
