@@ -2,7 +2,7 @@
 
 A highly customizable cleaning job script for FiveM QBCore servers with leveling system, job tracking, and a sleek dashboard UI.
 
-![Dashboard UI](your_screenshot_url_here)
+![Dashboard UI](https://imgur.com/biT5MmL)
 
 ## Features
 - 🎯 Progressive leveling system
@@ -11,8 +11,6 @@ A highly customizable cleaning job script for FiveM QBCore servers with leveling
 - 📈 Job history tracking
 - 🚛 Vehicle spawning system
 - 💾 Database integration for persistent data
-- ⚡ Performance optimized
-- 🛠️ Highly configurable
 
 ## Dependencies
 - [QBCore Framework](https://github.com/qbcore-framework)
