@@ -4,6 +4,8 @@ A customizable cleaning job script for FiveM QBCore servers with leveling system
 
 ![Dashboard](https://github.com/user-attachments/assets/8adb0cf1-33a5-416d-bfa1-edb3126a273a)
 
+Check the showcase video [here](https://youtu.be/vfryNrKkkq4)
+
 ## Features
 - 🎯 Progressive leveling system
 - 💰 Dynamic payout with level multipliers
