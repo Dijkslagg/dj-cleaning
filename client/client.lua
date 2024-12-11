@@ -351,25 +351,7 @@ end)
 
 RegisterNUICallback('endJob', function(data, cb)
     showDashboard(false)
-    if currentTruck and DoesEntityExist(currentTruck) then
-        DeleteEntity(currentTruck)
-        currentTruck = nil
-    end
-    
-    for _, prop in pairs(props) do
-        if DoesEntityExist(prop) then
-            DeleteEntity(prop)
-        end
-    end
-    props = {}
-    
-    for i, _ in ipairs(currentJobLocations) do
-        exports.ox_target:removeZone('clean_trash_' .. i)
-    end
-    currentJobLocations = {}
-    clearBlips()
-    
-    hasActiveTruck = false
+    cleanupJob()
     
     if not jobCompleted then
         exports.ox_lib:notify({
@@ -383,18 +365,16 @@ RegisterNUICallback('endJob', function(data, cb)
         })
     end
     
-    jobCompleted = false
-    isCleaningInProgress = false
-    
     TriggerServerEvent('dj-cleaning:endJob')
-    
+    hasActiveTruck = false
     cb({})
 end)
 
 RegisterNUICallback('collectPayout', function(data, cb)
     if jobCompleted then
         showDashboard(false)
-        cleanupJob() 
+        cleanupJob()
+        hasActiveTruck = false 
         TriggerServerEvent('dj-cleaning:collectPayout')
         cb({})
     end
@@ -436,18 +416,7 @@ end)
 
 RegisterNetEvent('dj-cleaning:cleanupJob')
 AddEventHandler('dj-cleaning:cleanupJob', function()
-    for _, prop in pairs(props) do
-        if DoesEntityExist(prop) then
-            DeleteEntity(prop)
-        end
-    end
-    props = {}
-    
-    for i, _ in ipairs(currentJobLocations) do
-        exports.ox_target:removeZone('clean_trash_' .. i)
-    end
-    currentJobLocations = {}
-    clearBlips()
+    cleanupJob()
 end)
 
 function cleanupJob()
@@ -455,7 +424,7 @@ function cleanupJob()
         DeleteVehicle(currentTruck)
         currentTruck = nil
     end
-    
+
     for _, prop in pairs(props) do
         if DoesEntityExist(prop) then
             DeleteEntity(prop)
@@ -472,7 +441,7 @@ function cleanupJob()
     clearBlips()
     isCleaningInProgress = false
     jobCompleted = false
-    hasActiveTruck = false
+    hasActiveTruck = false 
 end
 
 RegisterNetEvent('dj-cleaning:updateStats')
