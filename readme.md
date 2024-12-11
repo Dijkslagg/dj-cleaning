@@ -1,6 +1,6 @@
 # FiveM Cleaning Job Script
 
-A highly customizable cleaning job script for FiveM QBCore servers with leveling system, job tracking, and a sleek dashboard UI.
+A customizable cleaning job script for FiveM QBCore servers with leveling system, job tracking, and a sleek dashboard UI.
 
 ![Dashboard](https://github.com/user-attachments/assets/8adb0cf1-33a5-416d-bfa1-edb3126a273a)
 
