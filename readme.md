@@ -2,7 +2,7 @@
 
 A highly customizable cleaning job script for FiveM QBCore servers with leveling system, job tracking, and a sleek dashboard UI.
 
-![Dashboard UI](https://imgur.com/biT5MmL)
+![Dashboard](https://github.com/user-attachments/assets/8adb0cf1-33a5-416d-bfa1-edb3126a273a)
 
 ## Features
 - 🎯 Progressive leveling system
