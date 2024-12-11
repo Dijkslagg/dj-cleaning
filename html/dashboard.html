@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h2>Cleaning Service Dashboard</h2>
+            <div class="header-buttons">
+                <button id="startJob">Start Job</button>
+                <button id="closeButton">✕</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="progress">
+                <div class="level">Level: <span id="level">1</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="xp">XP: <span id="xp">0</span></div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h3>Total Jobs</h3>
+                    <span id="totalJobs">0</span>
+                </div>
+                <div class="stat-box">
+                    <h3>Total Earnings</h3>
+                    <span id="totalEarnings">$0</span>
+                </div>
+            </div>
+            <div class="recent-jobs">
+                <h3>Recent Jobs (last 3)</h3>
+                <ul id="jobList"></ul>
+            </div>
+            <div class="payouts">
+                <h3>Payouts (last 3)</h3>
+                <ul id="payoutList"></ul>
+            </div>
+        </div>
+    </div>
+    <script src="./dashboard.js"></script>
+</body>
+</html>
