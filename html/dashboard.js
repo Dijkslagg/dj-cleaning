@@ -23,7 +23,7 @@ window.addEventListener('message', function(event) {
     } else if (event.data.type === 'updateDashboard') {
         document.getElementById('level').textContent = event.data.level || 1;
         document.getElementById('xp').textContent = 
-            `${event.data.experience || 0}/${event.data.required || 100}`;
+            `${formatNumber(event.data.experience || 0)}/${formatNumber(event.data.required || 100)}`;
         
         const progressFill = document.getElementById('progressFill');
         progressFill.style.width = '0%';
@@ -74,7 +74,7 @@ window.addEventListener('message', function(event) {
                 ? completedJobs.map(job => `
                     <li class="payout-item">
                         <div class="payout-date">${job.date}</div>
-                        <div class="payout-amount">$${job.payout}</div>
+                        <div class="payout-amount">$${formatNumber(job.payout)}</div>
                     </li>
                 `).join('')
                 : '<li class="payout-item">No completed jobs</li>';

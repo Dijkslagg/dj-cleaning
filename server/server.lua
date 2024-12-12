@@ -74,19 +74,36 @@ end
 
 function AddExperience(citizenid, amount)
     local stats = GetPlayerCleaningStats(citizenid)
+    if Config.MaxLevel > 0 and stats.level >= Config.MaxLevel then
+        return {
+            level = stats.level,
+            experience = stats.experience,
+            required = GetRequiredXP(stats.level)
+        }
+    end
+
     local newExp = stats.experience + amount
     local newLevel = stats.level
     
     local required = GetRequiredXP(newLevel)
     while newExp >= required do
+        if Config.MaxLevel > 0 and newLevel >= Config.MaxLevel then
+            newExp = required - 1 
+            break
+        end
+        
         newExp = newExp - required
         newLevel = newLevel + 1
-        required = GetRequiredXP(newLevel) 
+        required = GetRequiredXP(newLevel)
         
         local player = QBCore.Functions.GetPlayerByCitizenId(citizenid)
         if player then
+            local message = Config.MaxLevel > 0 and newLevel >= Config.MaxLevel 
+                and string.format("Maximum level %d reached!", Config.MaxLevel)
+                or string.format("Level Up! You are now level %d!", newLevel)
+                
             TriggerClientEvent('ox_lib:notify', player.PlayerData.source, {
-                description = string.format("Level Up! You are now level %d!", newLevel),
+                description = message,
                 type = 'success'
             })
         end
@@ -222,9 +239,10 @@ AddEventHandler('dj-cleaning:collectPayout', function()
         level = newStats.level,
         experience = newStats.experience,
         required = GetRequiredXP(newStats.level),
+        progress = (stats.experience / GetRequiredXP(stats.level)) * 100,
         recentJobs = recentJobs,
         total_jobs = playerStats.total_jobs,
-        total_earnings = formatNumber(playerStats.total_earnings)
+        total_earnings = playerStats.total_earnings
     })
     
     TriggerClientEvent('ox_lib:notify', src, {

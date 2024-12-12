@@ -216,6 +216,7 @@ AddEventHandler('dj-cleaning:startCleaning', function(data)
         if completedSpots >= totalSpots then
             jobCompleted = true
             updateDashboardButton('Collect Payout', 'collectPayout')
+            clearBlips()
             exports.ox_lib:notify({
                 description = Config.PayoutNotification,
                 type = 'success'
@@ -446,6 +447,5 @@ end
 
 RegisterNetEvent('dj-cleaning:updateStats')
 AddEventHandler('dj-cleaning:updateStats', function(data)
-    local progress = (data.experience / 100) * 100
-    updateDashboard(data.level, data.experience, progress, data.recentJobs)
+    updateDashboard(data.level, data.experience, data.progress, data.recentJobs)
 end)
