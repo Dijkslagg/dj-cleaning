@@ -46,6 +46,7 @@ Config.CleaningDuration = 5000
 Config.Reward = {min = 100, max = 300}
 
 Config.LevelMultiplier = 0.2 -- 20% increase per level
+Config.MaxLevel = 15 -- Set to 0 for no level cap
 
 Config.CleaningLocations = {
     [1] = {
