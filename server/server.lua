@@ -1,6 +1,7 @@
 local activeJobs = {}
 local QBCore = exports['qb-core']:GetCoreObject()
 
+
 CreateThread(function()
     exports.oxmysql:update_async('UPDATE cleaning_jobs SET status = "failed" WHERE status = "ongoing"')
 end)
@@ -35,6 +36,7 @@ CreateThread(function()
     end
 end)
 
+
 function GetPlayerCleaningStats(citizenid)
     local result = exports.oxmysql:query_async('SELECT * FROM cleaning_levels WHERE citizenid = ?', {citizenid})
     if not result or not result[1] then
@@ -66,7 +68,7 @@ function GetRequiredXP(level)
     else
         local baseXP = 1600 
         local multiplier = 1.2
-        return math.floor(baseXP + (400 * (level - 5) * multiplier))
+        return math.floor(baseXP + (400 * (level - 5) * multiplier) + 1)
     end
 end
 
@@ -222,7 +224,7 @@ AddEventHandler('dj-cleaning:collectPayout', function()
         required = GetRequiredXP(newStats.level),
         recentJobs = recentJobs,
         total_jobs = playerStats.total_jobs,
-        total_earnings = playerStats.total_earnings
+        total_earnings = formatNumber(playerStats.total_earnings)
     })
     
     TriggerClientEvent('ox_lib:notify', src, {
