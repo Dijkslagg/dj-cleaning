@@ -1,12 +1,10 @@
 local activeJobs = {}
 local QBCore = exports['qb-core']:GetCoreObject()
 
--- Mark all ongoing jobs as failed when resource starts
 CreateThread(function()
     exports.oxmysql:update_async('UPDATE cleaning_jobs SET status = "failed" WHERE status = "ongoing"')
 end)
 
--- Initialize database tables when resource starts without dropping
 CreateThread(function()
     local success1 = exports.oxmysql:query_async([[
         CREATE TABLE IF NOT EXISTS cleaning_jobs (
@@ -40,7 +38,6 @@ end)
 function GetPlayerCleaningStats(citizenid)
     local result = exports.oxmysql:query_async('SELECT * FROM cleaning_levels WHERE citizenid = ?', {citizenid})
     if not result or not result[1] then
-        -- Create new entry for new player
         exports.oxmysql:insert_async('INSERT INTO cleaning_levels (citizenid, level, experience) VALUES (?, ?, ?)', 
             {citizenid, 1, 0})
         return {level = 1, experience = 0}
@@ -64,7 +61,13 @@ function GetRecentJobs(citizenid)
 end
 
 function GetRequiredXP(level)
-    return 100 * (2 ^ (level - 1)) 
+    if level <= 5 then
+        return 100 * (2 ^ (level - 1)) -- Makes the XP goes x2 till level 5. after that it increases with 20% each level. 
+    else
+        local baseXP = 1600 
+        local multiplier = 1.2
+        return math.floor(baseXP + (400 * (level - 5) * multiplier))
+    end
 end
 
 function AddExperience(citizenid, amount)
